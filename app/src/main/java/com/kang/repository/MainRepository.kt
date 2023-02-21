@@ -8,13 +8,13 @@ class MainRepository {
 
     //模拟远程
     suspend fun getUserInfo(name:String): UserInfo {
-
+        delay(1000);
         val isSummit = name.takeIf {
             Log.d("mytest", "println it:$it")
             it == "kang"
         }
         //延迟2秒
-        delay(2000);
+
         if (isSummit != null) {
             Log.d("mytest", isSummit)
             //设置信息
@@ -35,6 +35,21 @@ class MainRepository {
         }
 
 
+    }
 
+
+    suspend fun doTask1():Int{
+
+        delay(200)
+        //由于1，延迟时间比2 要长，异步执行时，这里在task2后面输出
+        Log.d("mytest","doTask1.....")
+
+        return 10;
+
+    }
+    suspend fun doTask2():Int{
+        delay(100)
+        Log.d("mytest","doTask2.....")
+        return 8;
     }
 }

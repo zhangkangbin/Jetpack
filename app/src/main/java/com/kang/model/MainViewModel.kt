@@ -6,7 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kang.repository.MainRepository
 import kotlinx.coroutines.*
+import java.io.File
 
+/**
+ *
+ */
 class MainViewModel : ViewModel() {
 
     val mUserInfoLiveData: MutableLiveData<UserInfo> by lazy {
@@ -15,16 +19,28 @@ class MainViewModel : ViewModel() {
     private val mUserRepository=MainRepository();
 
     fun submitUserInfo(name: String) {
-
-        viewModelScope.launch {
-
+        //start 为协程的启动模式
+        viewModelScope.launch (start = CoroutineStart.LAZY){
 
            val userInfo= mUserRepository.getUserInfo(name)
             mUserInfoLiveData.value=userInfo
 
+            //异步执行下面两个任务
+            val one=async { mUserRepository.doTask1() }
+            val two=async { mUserRepository.doTask2() }
 
+
+            Log.d("mytest", "二者结果：${one.await() +two.await()}");
+
+            //不加 async ，下面会先执行完task1,再到task2
+            val one2=mUserRepository.doTask1()
+            val two2=mUserRepository.doTask2()
+
+            Log.d("mytest", "二者结果：${one2 +two2}");
 
         }
+
+        Log.d("mytest","我最先被执行！");
     }
 
     private fun mainScopeTask() {
@@ -50,7 +66,22 @@ class MainViewModel : ViewModel() {
         Log.d("mytest", "任务处理完成！")
 
     }
+    //比 给handle 发一个消息，回到主线程，这样方便多了。没有回调，巴适的不得了。
 
+    private fun globalScopeTask(){
+        GlobalScope.launch(Dispatchers.Main) {
+
+            delay(2000)
+
+            withContext(Dispatchers.IO){
+                //子线程处理文件
+                val file= File("");
+            }
+
+            //log("处理完成 withContext 函数中的逻辑才会执行到这里！");
+            //show();
+        }
+    }
 }
 
 data class UserInfo(

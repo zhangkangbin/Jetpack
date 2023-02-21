@@ -12,7 +12,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.kang.model.MainViewModel
 import kotlinx.coroutines.*
-import java.io.File
 
 class MainActivity : AppCompatActivity() ,CoroutineScope by MainScope() {
     lateinit var mTvName :TextView;
@@ -24,27 +23,7 @@ class MainActivity : AppCompatActivity() ,CoroutineScope by MainScope() {
         initView();
 
     }
-    //比 给handle 发一个消息，回到主线程，这样方便多了。没有回调，巴适的不得了。
 
-    private fun globalScopeTask(){
-        GlobalScope.launch(Dispatchers.Main) {
-
-            delay(2000)
-
-            withContext(Dispatchers.IO){
-                //子线程处理文件
-                val file= File("");
-            }
-
-            //log("处理完成 withContext 函数中的逻辑才会执行到这里！");
-            show();
-        }
-    }
-
-    private fun show(){
-        Toast.makeText(this@MainActivity,"show message",Toast.LENGTH_LONG).show();
-
-    }
 
     private fun  initView(){
         mTvName=findViewById(R.id.main_tv_name);
@@ -84,4 +63,12 @@ class MainActivity : AppCompatActivity() ,CoroutineScope by MainScope() {
             Log.d("mytest", "监听到数据变化：${t?.userName}")
         }
     }
+
+/*
+
+    private fun show(){
+        Toast.makeText(this@MainActivity,"show message",Toast.LENGTH_LONG).show();
+
+    }
+*/
 }
