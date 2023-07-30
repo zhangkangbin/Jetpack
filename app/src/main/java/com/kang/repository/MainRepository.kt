@@ -1,8 +1,14 @@
 package com.kang.repository
 
+import android.app.Dialog
 import android.util.Log
+import com.kang.api.BaseApi
 import com.kang.model.UserInfo
 import kotlinx.coroutines.delay
+import retrofit2.Retrofit
+
+
+
 
 class MainRepository {
 
@@ -51,5 +57,17 @@ class MainRepository {
         delay(100)
         Log.d("mytest","doTask2.....")
         return 8;
+    }
+
+    fun  getHttpData(){
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.github.com/")
+            .build()
+
+        val service=retrofit.create(BaseApi::class.java);
+            service.listRepos("kang")
+
+
     }
 }

@@ -12,7 +12,7 @@ import java.io.File
  *
  */
 class MainViewModel : ViewModel() {
-
+    //委托
     val mUserInfoLiveData: MutableLiveData<UserInfo> by lazy {
         MutableLiveData<UserInfo>()
     }
@@ -20,7 +20,7 @@ class MainViewModel : ViewModel() {
 
     fun submitUserInfo(name: String) {
         //start 为协程的启动模式
-        viewModelScope.launch (start = CoroutineStart.LAZY){
+        val  scope=viewModelScope.launch (start = CoroutineStart.LAZY){
 
            val userInfo= mUserRepository.getUserInfo(name)
             mUserInfoLiveData.value=userInfo
@@ -39,8 +39,23 @@ class MainViewModel : ViewModel() {
             Log.d("mytest", "二者结果：${one2 +two2}");
 
         }
+       //协程工作状态
+        Log.d("mytest","我最先被执行！${scope.isActive } ${scope.isCompleted }" );
 
-        Log.d("mytest","我最先被执行！");
+        //- 阻塞当前线程，直到内部的所有协程执行完毕
+        runBlocking {
+            //超时函数
+            withTimeout(1000L){
+
+            }
+
+        }
+
+        //CoroutineContext 的 plus函数， 进行对 + 号运算符进行了重载。
+
+        viewModelScope.launch (Dispatchers.Default+CoroutineName("随便")){  }
+
+
     }
 
     private fun mainScopeTask() {

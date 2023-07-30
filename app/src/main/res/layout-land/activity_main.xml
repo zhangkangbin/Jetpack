@@ -9,24 +9,10 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:padding="29dp"
-        android:layout_margin="20dp"
         android:id="@+id/main_tv_name"
-        android:background="@color/purple_700"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="name" />
-
-    <kang.base.corner.LinearLayoutSelector
-        android:background="@color/purple_700"
-        android:padding="29dp"
-        android:layout_margin="20dp"
-        app:radius="10dp"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </kang.base.corner.LinearLayoutSelector>
 
     <EditText
         android:id="@+id/main_edt"
